@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-function AddBrand() {
+function AddProduct() {
 
     const navigate = useNavigate();
 
@@ -185,7 +185,7 @@ function AddBrand() {
             console.log("Final Payload:", payload);
 
             if (isEditingMain) {
-                await axios.put(`http://localhost:8000/brand/update/${product.id}`, payload);
+                await axios.put(`http://localhost:8000/api/products/update/${product.id}`, payload);
                 Swal.fire({
                     icon: 'success',
                     title: 'Updated successfull',
@@ -197,7 +197,7 @@ function AddBrand() {
                     }
                 });
             } else {
-                const res = await axios.post('http://localhost:8000/brand/add', payload);
+                const res = await axios.post('http://localhost:8000/api/products/add', payload);
                 console.log("Response from API:", res.data);
                 Swal.fire({
                     icon: 'success',
@@ -227,7 +227,7 @@ function AddBrand() {
 
     return (
         <div className='container mt-4 mt-lg-0 mt-md-0'>
-            <h2 className='fw-bold text-center mb-4 main-tittle'>Add Brand Details</h2>
+            <h2 className='fw-bold text-center mb-4 main-tittle'>Add Product Details</h2>
             <form onSubmit={handleSubmit}>
                 {/* Main Product */}
                 <div className="rounded-3 shadow overflow-hidden">
@@ -299,49 +299,56 @@ function AddBrand() {
                     <div className="bg-dark p-3">
                         <h5 className="fw-bold m-0 text-white"><FaBox className='me-2' />Added SubProduct</h5>
                     </div>
-                    <div className='bg-white p-4 table-responsive'>
-                        <table className='table custom-table table-hover text-center'>
-                            <thead className='table-dark'>
-                                <tr>
-                                    <th style={{ width: "10%" }}>ID</th>
-                                    <th style={{ width: "20%" }}>Title</th>
-                                    <th style={{ width: "20%" }}>Name</th>
-                                    <th style={{ width: "30%" }}>Description</th>
-                                    <th style={{ width: "10%" }}>Image</th>
-                                    <th style={{ width: "10%" }}>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody className='pera'>
-                                {product.subproducts.length === 0 ? (
+                    <div className='bg-white p-4'>
+                        {product.h1 && (
+                            <div className="fw-bold fs-5 text-center mb-2">
+                                {product.h1}
+                            </div>
+                        )}
+                        <div className='table-responsive'>
+                            <table className='table custom-table table-hover text-center'>
+                                <thead className='table-dark'>
                                     <tr>
-                                        <td colSpan="6" className="text-center">No SubProducts Added.</td>
+                                        <th style={{ width: "10%" }}>ID</th>
+                                        <th style={{ width: "20%" }}>Title</th>
+                                        <th style={{ width: "20%" }}>Name</th>
+                                        <th style={{ width: "30%" }}>Description</th>
+                                        <th style={{ width: "10%" }}>Image</th>
+                                        <th style={{ width: "10%" }}>Action</th>
                                     </tr>
-                                ) : (
-                                    product.subproducts.map((sp, i) => (
-                                        <tr key={i}>
-                                            <td style={{ width: "10%" }}>{sp.id}</td>
-                                            <td style={{ width: "20%" }}>{sp.ProductName}</td>
-                                            <td style={{ width: "20%" }}>{sp.subName}</td>
-                                            <td style={{ width: "30%" }}>{sp.description}</td>
-                                            <td style={{ width: "10%" }}>
-                                                {sp.proimg && (
-                                                    <img
-                                                        src={sp.proimg}
-                                                        alt="Subproduct"
-                                                        style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                                                    />
-                                                )}
-                                            </td>
-                                            <td style={{ width: "10%" }}><FaEdit className='text-danger fs-5' onClick={() => {
-                                                setSub(sp);
-                                                setIsEditingSub(true);
-                                                setEditSubIndex(i);
-                                            }} /></td>
+                                </thead>
+                                <tbody className='pera'>
+                                    {product.subproducts.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="6" className="text-center">No SubProducts Added.</td>
                                         </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                                    ) : (
+                                        product.subproducts.map((sp, i) => (
+                                            <tr key={i}>
+                                                <td style={{ width: "10%" }}>{sp.id}</td>
+                                                <td style={{ width: "20%" }}>{sp.ProductName}</td>
+                                                <td style={{ width: "20%" }}>{sp.subName}</td>
+                                                <td style={{ width: "30%" }}>{sp.description}</td>
+                                                <td style={{ width: "10%" }}>
+                                                    {sp.proimg && (
+                                                        <img
+                                                            src={sp.proimg}
+                                                            alt="Subproduct"
+                                                            style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                                                        />
+                                                    )}
+                                                </td>
+                                                <td style={{ width: "10%" }}><FaEdit className='text-danger fs-5' onClick={() => {
+                                                    setSub(sp);
+                                                    setIsEditingSub(true);
+                                                    setEditSubIndex(i);
+                                                }} /></td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -353,4 +360,4 @@ function AddBrand() {
     );
 }
 
-export default AddBrand;
+export default AddProduct;
